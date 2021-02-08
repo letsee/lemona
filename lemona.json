@@ -1,0 +1,11 @@
+{
+	"uri":"lemona.json",
+	"name":"Lemona Sticker",
+	"size":{
+		"width": 1000,
+		"height": 546
+	},
+	"scale": 1,
+	"image":"lemona.png",
+	"information":{}
+}
