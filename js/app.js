@@ -37,7 +37,6 @@ let emotions,
 const setLength = (e) => {
   displayText.innerHTML = e.target.value;
   e.target.style.width = `${displayText.offsetWidth}px`;
-  console.warn(`setLength: ${displayText.offsetWidth}px`);
 };
 
 /**
@@ -305,6 +304,7 @@ function createDom(type, value, _author = null) {
   editObject.element.classList.add("helper");*/
 
   currentTemplate.content = createDomContent(type, value, _author);
+  console.warn(currentTemplate.content);
 
   if (!editObject) {
     editObject = createRenderable(currentTemplate.content);
