@@ -151,7 +151,7 @@
   line-height: 50px;
   margin: 15px;
 }
-#guide-bg .guideIcon .rightAlign .guideText img {
+#guide-bg .guideIcon .rightAlign .guideText svg {
   width: 70px;
   transform: rotate(-5deg) translateY(-10px);
   margin-left: 5px;
