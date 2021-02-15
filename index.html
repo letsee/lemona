@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Letsee AR Demo - AR Sticker</title>
- 
+  <meta charset="UTF-8">
+  <title>Letsee AR Demo - AR Sticker</title>
+  
   <!-- Letsee SDK -->
   <script src="letsee.js"></script>
   
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,400,700&display=swap" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,400,700&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
   
   <script src="https://www.unpkg.com/hammerjs@2.0.8/hammer.min.js"></script>
-	<script src="./vendor/axios.min.js"></script>
-	<script src="./vendor/kakao.min.js"></script>
+  <script src="js/lib/axios.min.js"></script>
+  <script src="js/lib/kakao.min.js"></script>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-	<link rel="stylesheet" href="font/styles.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/layout.css">
- 
-	<style media="place" type="text/css">
-		#container {
-			-letsee-target: uri('lemona.json');
-			width: 1000px;
-			height: 546px;
-		}
-	</style>
+  <link rel="stylesheet" href="font/styles.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/layout.css">
+  
+  <style media="place" type="text/css">
+    #container {
+      -letsee-target: uri('lemona.json');
+      width: 1000px;
+      height: 546px;
+    }
+  </style>
   
   <style>
     .animate__animated.animate__pulse {
@@ -38,11 +38,11 @@
 
 <!-- Dim background -->
 <div id="nav" class="backdrop">
-	<ul class="rightBtn">
-		<li><img id="navKakao" src="assets/images/kakao-btn.png" alt="카카오톡 공유"></li>
-		<li><img id="navTextMessage" src="assets/images/input-text-mint.png" alt="텍스트 메세지 남기기" ></li>
-		<li><img id="navEmoticonMessage" src="assets/images/input-emoji-mint.png" alt="이모티콘 남기기"></li>
-	</ul>
+  <ul class="rightBtn">
+    <li><img id="navKakao" src="assets/images/kakao-btn.png" alt="카카오톡 공유"></li>
+    <li><img id="navTextMessage" src="assets/images/input-text-mint.png" alt="텍스트 메세지 남기기"></li>
+    <li><img id="navEmoticonMessage" src="assets/images/input-emoji-mint.png" alt="이모티콘 남기기"></li>
+  </ul>
 </div>
 
 <!-- Guide modal -->
@@ -63,7 +63,16 @@
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116.6 28.04">
           <defs>
             <style>
-              .cls-1,.cls-2{fill:none;stroke:#eb1a21;stroke-miterlimit:10;stroke-width:2px;}.cls-2{stroke-dasharray:4.83 4.83;}
+              .cls-1, .cls-2 {
+                fill: none;
+                stroke: #eb1a21;
+                stroke-miterlimit: 10;
+                stroke-width: 2px;
+              }
+              
+              .cls-2 {
+                stroke-dasharray: 4.83 4.83;
+              }
             </style>
           </defs>
           <title>Untitled-1</title>
@@ -78,7 +87,16 @@
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116.6 28.04">
           <defs>
             <style>
-              .cls-1,.cls-2{fill:none;stroke:#eb1a21;stroke-miterlimit:10;stroke-width:2px;}.cls-2{stroke-dasharray:4.83 4.83;}
+              .cls-1, .cls-2 {
+                fill: none;
+                stroke: #eb1a21;
+                stroke-miterlimit: 10;
+                stroke-width: 2px;
+              }
+              
+              .cls-2 {
+                stroke-dasharray: 4.83 4.83;
+              }
             </style>
           </defs>
           <title>Untitled-1</title>
@@ -93,7 +111,16 @@
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116.6 28.04">
           <defs>
             <style>
-              .cls-1,.cls-2{fill:none;stroke:#eb1a21;stroke-miterlimit:10;stroke-width:2px;}.cls-2{stroke-dasharray:4.83 4.83;}
+              .cls-1, .cls-2 {
+                fill: none;
+                stroke: #eb1a21;
+                stroke-miterlimit: 10;
+                stroke-width: 2px;
+              }
+              
+              .cls-2 {
+                stroke-dasharray: 4.83 4.83;
+              }
             </style>
           </defs>
           <title>Untitled-1</title>
@@ -109,71 +136,155 @@
 
 <!-- text input -->
 <div id="textMessageWrapper" style="display: none">
-	<div id="textMessageTitle"><p>전하고 싶은 메세지를 남겨주세요</p></div>
-	<span id="displayText"></span>
-	<div id="inputWraper">
-		<span>#</span><input id="textMessage" type="text">
-	</div>
-
-	<div class="btnWrap" id="textMessageBtn">
-		<a href="#" class="btn btnRound btnYellow btnOutline" id="cancelTextMessage">취소</a>
-		<a href="#" class="btn btnRound btnYellow" id="addTextMessage">확인</a>
-	</div>
+  <div id="textMessageTitle"><p>전하고 싶은 메세지를 남겨주세요</p></div>
+  <span id="displayText"></span>
+  <div id="inputWraper">
+    <span>#</span><input id="textMessage" type="text">
+  </div>
+  
+  <div class="btnWrap" id="textMessageBtn">
+    <a href="#" class="btn btnRound btnYellow btnOutline" id="cancelTextMessage">취소</a>
+    <a href="#" class="btn btnRound btnYellow" id="addTextMessage">확인</a>
+  </div>
 </div>
 
 <!-- emoticon input -->
 <div id="emotions">
-	<img id="undo" src="assets/images/input-undo-mint.png"/>
-	<div class="wrap">
-		<div class="emoji-box-item">
-			<ul class="cf">
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker00"><img src="./assets/stickers/bts-sticker-00.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker01"><img src="./assets/stickers/bts-sticker-01.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker02"><img src="./assets/stickers/bts-sticker-02.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker03"><img src="./assets/stickers/bts-sticker-03.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker04"><img src="./assets/stickers/bts-sticker-04.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker05"><img src="./assets/stickers/bts-sticker-05.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker06"><img src="./assets/stickers/bts-sticker-06.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker07"><img src="./assets/stickers/bts-sticker-07.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker08"><img src="./assets/stickers/bts-sticker-08.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker09"><img src="./assets/stickers/bts-sticker-09.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker10"><img src="./assets/stickers/bts-sticker-10.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker11"><img src="./assets/stickers/bts-sticker-11.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker12"><img src="./assets/stickers/bts-sticker-12.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker13"><img src="./assets/stickers/bts-sticker-13.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker14"><img src="./assets/stickers/bts-sticker-14.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker15"><img src="./assets/stickers/bts-sticker-15.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker16"><img src="./assets/stickers/bts-sticker-16.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker17"><img src="./assets/stickers/bts-sticker-17.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker18"><img src="./assets/stickers/bts-sticker-18.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker19"><img src="./assets/stickers/bts-sticker-19.jpg"></div></div></li>
-				<li><div class="emoticonHolder"><div class="emoticonBox btsSticker20"><img src="./assets/stickers/bts-sticker-20.jpg"></div></div></li>
-			</ul>
-		</div>
-	</div>
+  <img id="undo" src="assets/images/input-undo-mint.png"/>
+  <div class="wrap">
+    <div class="emoji-box-item">
+      <ul class="cf">
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker00"><img src="./assets/stickers/bts-sticker-00.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker01"><img src="./assets/stickers/bts-sticker-01.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker02"><img src="./assets/stickers/bts-sticker-02.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker03"><img src="./assets/stickers/bts-sticker-03.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker04"><img src="./assets/stickers/bts-sticker-04.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker05"><img src="./assets/stickers/bts-sticker-05.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker06"><img src="./assets/stickers/bts-sticker-06.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker07"><img src="./assets/stickers/bts-sticker-07.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker08"><img src="./assets/stickers/bts-sticker-08.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker09"><img src="./assets/stickers/bts-sticker-09.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker10"><img src="./assets/stickers/bts-sticker-10.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker11"><img src="./assets/stickers/bts-sticker-11.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker12"><img src="./assets/stickers/bts-sticker-12.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker13"><img src="./assets/stickers/bts-sticker-13.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker14"><img src="./assets/stickers/bts-sticker-14.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker15"><img src="./assets/stickers/bts-sticker-15.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker16"><img src="./assets/stickers/bts-sticker-16.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker17"><img src="./assets/stickers/bts-sticker-17.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker18"><img src="./assets/stickers/bts-sticker-18.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker19"><img src="./assets/stickers/bts-sticker-19.jpg"></div>
+          </div>
+        </li>
+        <li>
+          <div class="emoticonHolder">
+            <div class="emoticonBox btsSticker20"><img src="./assets/stickers/bts-sticker-20.jpg"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <!-- Save message button -->
 <div id="postMessageWrapper" style="display: none">
-	<div class="title"><p>크기를 조절하거나 위치를 지정해주세요</p></div>
-	<div class="btnWrap">
-		<a href="#" class="btn btnRound btnYellow btnOutline" id="cancelMessage">취소</a>
-		<a href="#" class="btn btnRound btnYellow" id="postMessage">확인</a>
-	</div>
+  <div class="title"><p>크기를 조절하거나 위치를 지정해주세요</p></div>
+  <div class="btnWrap">
+    <a href="#" class="btn btnRound btnYellow btnOutline" id="cancelMessage">취소</a>
+    <a href="#" class="btn btnRound btnYellow" id="postMessage">확인</a>
+  </div>
 </div>
 
 <!-- kakao share -->
 <div id="shareKakao">
-	<div class="wrap">
-		<div class="title">
-			<p><img src="assets/images/kakao-img.png">카카오톡으로 공유를 하시겠습니까?</p>
-		</div>
-
-		<div class="btnWrap">
-			<a href="#" class="btn btnRound btnYellow btnOutline" id="cancelShare">취소</a>
-			<a href="#" class="btn btnRound btnYellow" id="confirmShare">확인</a>
-		</div>
-	</div>
+  <div class="wrap">
+    <div class="title">
+      <p><img src="assets/images/kakao-img.png">카카오톡으로 공유를 하시겠습니까?</p>
+    </div>
+    
+    <div class="btnWrap">
+      <a href="#" class="btn btnRound btnYellow btnOutline" id="cancelShare">취소</a>
+      <a href="#" class="btn btnRound btnYellow" id="confirmShare">확인</a>
+    </div>
+  </div>
 </div>
 
 <div id="container" style="display: none;"></div>
@@ -186,13 +297,14 @@
 <script>
   letsee.ready(() => {
     letsee.start();
-    // getParameter();
     initApplication();
     
-    letsee.onTrackStart(() => {});
-    letsee.onTrackEnd(() => {});
-    letsee.onTrackMove(() => {});
-    
+    letsee.onTrackStart(() => {
+    });
+    letsee.onTrackEnd(() => {
+    });
+    letsee.onTrackMove(() => {
+    });
   });
   letsee.init();
 </script>

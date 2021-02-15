@@ -1,14 +1,13 @@
-
 window.addEventListener("touchstart", touchDown);
 window.addEventListener("touchend", touchUp);
 window.addEventListener("touchmove", touchMove);
 
 let manager = new Hammer(document.body);
-manager.get('pinch').set({enable: true});
-manager.get('pan').set({enable: true, direction: Hammer.DIRECTION_ALL});
-manager.get('rotate').set({ enable: true });
-manager.get('press').set({ enable: true,time: 1000, threshold: 15 });
-manager.get('tap').set({ enable: true });
+manager.get("pinch").set({ enable: true });
+manager.get("pan").set({ enable: true, direction: Hammer.DIRECTION_ALL });
+manager.get("rotate").set({ enable: true });
+manager.get("press").set({ enable: true, time: 1000, threshold: 15 });
+manager.get("tap").set({ enable: true });
 
 let touch = {
   current: {
@@ -223,16 +222,16 @@ function touchMove(e) {
     const speed = 0.01;
 
     const x = e.touches[1].pageX - touch.move.x,
-        y = e.touches[1].pageY - touch.move.y;
+      y = e.touches[1].pageY - touch.move.y;
 
     const mX = new Matrix4(),
-        mY = new Matrix4();
+      mY = new Matrix4();
 
     mX.makeRotationX(y * speed);
     mY.makeRotationY(x * speed);
 
     const m = new Matrix4(),
-        mQ = new Quaternion();
+      mQ = new Quaternion();
 
     m.multiplyMatrices(mX, mY);
     mQ.setFromRotationMatrix(m);

@@ -1,68 +1,39 @@
-
-let guideBg,
-    postMessageWrapper;
+let guideBg, postMessageWrapper;
 
 // Buttons
 let startArMessage,
-    cancelTextMessage,
-    postMessage,
-    cancelMessage,
-    navEmoticonMessage,
-    undoEmoticon,
-    navKakao,
-    textMessageBtn, shareKakao, cancelShare, confirmShare;
+  cancelTextMessage,
+  postMessage,
+  cancelMessage,
+  navEmoticonMessage,
+  undoEmoticon,
+  navKakao,
+  textMessageBtn,
+  shareKakao,
+  cancelShare,
+  confirmShare;
 
 // Nav
-let navTextMessage,
-    navWrapper;
+let navTextMessage, navWrapper;
 
 // Text message element
 let textMessage,
-    textMessageWrapper,
-    addTextMessage,
-    displayText,
-    textMessageTitle;
+  textMessageWrapper,
+  addTextMessage,
+  displayText,
+  textMessageTitle;
 
 // Emoticon message element
-let emotions,
-    emoticonBox;
+let emotions, emoticonBox;
 
-// const navTrash = document.getElementById("navTrash");
-// const loader = document.getElementById("loader");
-
-/**
- * Control the length of message when typing.
- * @param e
- */
-const setLength = (e) => {
-  displayText.innerHTML = e.target.value;
-  e.target.style.width = `${displayText.offsetWidth}px`;
-};
-
-/**
- * Reset the text message when clicks on Cancel button.
- */
-const resetTextMessage = () => {
-  displayText.innerText = "";
-  textMessage.value = "";
-  textMessage.style.width = "1em";
-};
-
-axios.defaults.baseURL = "https://browser.letsee.io:8337/parse";
-axios.defaults.headers.common["X-Parse-Application-Id"] = "awe2019wallboard";
-// axios.defaults.baseURL = 'http://localhost:1337/parse';
-// axios.defaults.headers.common['X-Parse-Application-Id'] = 'TEST_APP';
-const dbUrl = "classes/lemona_sticker";
-
-let editObject = null;
-let helpRenderable = null;
-let currentTarget = null;
-const renderItems = [];
+let editObject       = null,
+    currentTarget    = null;
+const renderItems    = [],
+    commentObject    = [];
 let currentZposition = 0;
 const zpositionDelta = 0.1;
-const newZposition = (val) => val * -zpositionDelta;
-
-let CURRENT_URI = null;
+const newZposition   = (val) => val * -zpositionDelta;
+let currentTemplate = {};
 const commentTemplate = {
   id: null,
   type: null,
@@ -84,9 +55,40 @@ const commentTemplate = {
     z: 1,
   },
 };
-let currentTemplate = {};
+const dbUrl = "classes/lemona_sticker";
 
-let commentObject = [];
+//******************************** AXIOS ******************************** //
+axios.defaults.baseURL = "https://browser.letsee.io:8337/parse";
+axios.defaults.headers.common["X-Parse-Application-Id"] = "awe2019wallboard";
+// axios.defaults.baseURL = 'http://localhost:1337/parse';
+// axios.defaults.headers.common['X-Parse-Application-Id'] = 'TEST_APP';
+
+//******************************** KAKAO ******************************** //
+Kakao.init("3acf383e8ccdb7b906df497c249ea01b");
+const shareUrl = "http://browser.letsee.io/lemona/";
+const shareParam = "object";
+
+/**
+ * Control the length of message when typing.
+ * @param e
+ */
+const setLength = (e) => {
+  displayText.innerHTML = e.target.value;
+  e.target.style.width = `${displayText.offsetWidth}px`;
+};
+
+/**
+ * Reset the text message when clicks on Cancel button.
+ */
+const resetTextMessage = () => {
+  displayText.innerText = "";
+  textMessage.value = "";
+  textMessage.style.width = "1em";
+};
+
+/**
+ * Set current template for touch position.
+ */
 function setCurrentTemplate() {
   currentTemplate = { ...commentTemplate };
   touch.current.x = 0;
@@ -96,41 +98,51 @@ function setCurrentTemplate() {
   touch.current.rotation = 0;
 }
 
-// Comment app
-function getComments() {
-  console.log("getComments");
+/**
+ * Get all comments from server.
+ * @returns {Promise<unknown>}
+ */
+/*function getComments() {
   return new Promise((resolve, reject) => {
     axios
-    .get(dbUrl, {
-      params: {
-        order: "createdAt",
-      },
-    })
-    .then((data) => {
-      printCommentItemsFromJson(data.data.results);
-      editObject = null;
-    })
-    .catch((error) => {
-      reject(error);
-    });
+      .get(dbUrl, {
+        params: {
+          order: "createdAt",
+        },
+      })
+      .then((data) => {
+        printCommentItemsFromJson(data.data.results);
+        editObject = null;
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
-}
+}*/
 
+/**
+ * Get all comments from JSON object.
+ * @param data
+ */
 function printCommentItemsFromJson(data) {
   data.forEach((item, index) => {
     const renderableItem = createRenderable(
-        item.content,
-        item.position,
-        item.rotation,
-        item.scale
+      item.content,
+      item.position,
+      item.rotation,
+      item.scale
     );
     renderableItem.position.z = newZposition(currentZposition);
     currentZposition++;
     renderItems.push(renderableItem);
-    // world.add(renderableItem);
   });
 }
 
+/**
+ * Get rotation of Object3D.
+ * @param rotation
+ * @returns {{_order: (*|string), _x: *, _y: *, _z: *}}
+ */
 function extractRotation(rotation) {
   return {
     _x: rotation._x,
@@ -140,20 +152,18 @@ function extractRotation(rotation) {
   };
 }
 
-// getComments();
-
-// const reviewText = $('#textReviewContent');
-// const reviewName = $('#textReviewAuthor');
-
+/**
+ * Reset comments.
+ * @param status
+ */
 function resetComment(status = false) {
-  // if (!status) world.remove(editObject);
 
   if (!status) {
-    // Remove xrelement our of Entity
-    letsee.getEntityByUri('lemona.json').children.pop();
+    // Remove xrelement out of Entity
+    letsee.getEntityByUri("lemona.json").children.pop();
 
-    // Remove xrelement our of DOM
-    let elem = document.querySelector('.helper');
+    // Remove xrelement out of DOM
+    let elem = document.querySelector(".helper");
     elem.parentNode.removeChild(elem);
   }
 
@@ -180,19 +190,27 @@ function addComment(_type, _val, _author = null) {
   touch.current.y = 0;
 }
 
-function showCommentRenderable() {
-  renderItems.forEach((obj) => {
-    // world.add(obj)
-  });
-}
+/**
+ * Show all renderable objects.
+ */
+/*function showCommentRenderable() {
+  renderItems.forEach((obj) => {});
+}*/
 
-function hideCommentRenderable() {
-  renderItems.forEach((obj) => {
-    // world.remove(obj)
-  });
-}
+/**
+ * Hie all renderable objects.
+ */
+/*function hideCommentRenderable() {
+  renderItems.forEach((obj) => {});
+}*/
 
-function validation(_reviewText, _reviewName) {
+/**
+ * Validate the message form.
+ * @param _reviewText
+ * @param _reviewName
+ * @returns {boolean[]}
+ */
+/*function validation(_reviewText, _reviewName) {
   let flag = [false, false];
   const textLength = _reviewText.val().length;
   const nameLength = _reviewName.val().length;
@@ -206,9 +224,9 @@ function validation(_reviewText, _reviewName) {
     // too long
     console.log("too long text");
     checkValidation(
-        _reviewText,
-        false,
-        "Too long review. Need lees than 15 character."
+      _reviewText,
+      false,
+      "Too long review. Need lees than 15 character."
     );
     flag[0] = false;
   } else {
@@ -221,9 +239,9 @@ function validation(_reviewText, _reviewName) {
     flag[1] = false;
   } else if (nameLength > 5) {
     checkValidation(
-        _reviewName,
-        false,
-        "Too long name. Need lees than 5 character."
+      _reviewName,
+      false,
+      "Too long name. Need lees than 5 character."
     );
     flag[1] = false;
   } else {
@@ -232,9 +250,15 @@ function validation(_reviewText, _reviewName) {
   }
 
   return flag;
-}
+}*/
 
-function checkValidation(ele, status, text = null) {
+/**
+ * Check the form when users type the messages.
+ * @param ele
+ * @param status
+ * @param text
+ */
+/*function checkValidation(ele, status, text = null) {
   if (status) {
     ele.removeClass("validationFailed");
     ele.siblings(".validation").html("");
@@ -244,7 +268,7 @@ function checkValidation(ele, status, text = null) {
     ele.siblings(".validation").html(text);
     ele.siblings(".validation").show();
   }
-}
+}*/
 
 /**
  * Create DOM content wrapper for comments (text & emojis).
@@ -255,8 +279,8 @@ function checkValidation(ele, status, text = null) {
  */
 const createDomContent = (_type, _content, _author = null) => {
   return _type === "text"
-      ? `<div class="wrap"><div class="comment"><div class="value">${_content}</div></div></div>`
-      : `<div class="wrap"><div class="emoji"><div class="value">${_content}</div></div></div>`;
+    ? `<div class="wrap"><div class="comment"><div class="value">${_content}</div></div></div>`
+    : `<div class="wrap"><div class="emoji"><div class="value">${_content}</div></div></div>`;
 };
 
 /**
@@ -267,12 +291,17 @@ const createDomContent = (_type, _content, _author = null) => {
  * @param _scale
  * @returns {*}
  */
-function createRenderable(_content, _position = null, _rotation = null, _scale = null) {
+function createRenderable(
+  _content,
+  _position = null,
+  _rotation = null,
+  _scale = null
+) {
   // const element = document.createElement("div");
   // element.classList.add("renderable");
   // element.innerHTML = _content;
 
-  let xrelement = letsee.addXRElement(_content, letsee.getEntityByUri('lemona.json'));
+  let xrelement = letsee.addXRElement(_content, letsee.getEntityByUri("lemona.json"));
 
   /*const renderableEle = new DOMRenderable(element);
   if (_position) renderableEle.position.copy(_position);
@@ -308,9 +337,8 @@ function createDom(type, value, _author = null) {
 
   if (!editObject) {
     editObject = createRenderable(currentTemplate.content);
-    editObject.element.classList.add('renderable', 'helper');
-  }
-  else console.warn("editObject is already exist!");
+    editObject.element.classList.add("renderable", "helper");
+  } else console.warn("editObject is already exist!");
 
   return editObject;
 }
@@ -364,9 +392,10 @@ function saveComment() {
   });
 }*/
 
-Kakao.init("3acf383e8ccdb7b906df497c249ea01b");
-const shareUrl = "http://browser.letsee.io/lemona/";
-const shareParam = "object";
+/**
+ * Send the link to share by Kakao.
+ * @param objectId
+ */
 const sendLink = (objectId) => {
   Kakao.Link.sendDefault({
     objectType: "feed",
@@ -391,61 +420,67 @@ const sendLink = (objectId) => {
   });
 };
 
-// Check share parameter
-function getParameter() {
-  console.error(`getParameter`);
-
+/**
+ * Check shared parameter
+ * @returns {boolean}
+ */
+/*function getParameter() {
   const agent = navigator.userAgent.toLowerCase();
   const objId = new URL(window.location.href).searchParams.get(shareParam);
   if (objId) {
     if (agent.indexOf("kakao") > -1) {
       if (agent.indexOf("android") > -1) {
         location.href =
-            "intent://browser.letsee.io/lemona/index.html?" +
-            shareParam +
-            "=" +
-            objId +
-            "#Intent;scheme=http;package=com.android.chrome;end";
+          "intent://browser.letsee.io/lemona/index.html?" +
+          shareParam +
+          "=" +
+          objId +
+          "#Intent;scheme=http;package=com.android.chrome;end";
       } else {
         window.open(
-            `https://browser.letsee.io/lemona/index.html?${shareParam}=${shareObjectId}`,
-            "_self"
+          `https://browser.letsee.io/lemona/index.html?${shareParam}=${shareObjectId}`,
+          "_self"
         );
       }
       return false;
     }
     getSharedMessage(objId)
-    .then((result) => {
-      editObject = null;
-      printCommentItemsFromJson(result.data.comments);
-    })
-    .catch((error) => {
-      initApplication();
-    });
+      .then((result) => {
+        editObject = null;
+        printCommentItemsFromJson(result.data.comments);
+      })
+      .catch((error) => {
+        initApplication();
+      });
   } else {
     initApplication();
   }
-}
+}*/
 
-const getSharedMessage = (objId) => {
+/**
+ * Get shared messages.
+ * @param objId
+ * @returns {Promise<unknown>}
+ */
+/*const getSharedMessage = (objId) => {
   return new Promise((resolve, reject) => {
     axios
-    .get(`${dbUrl}/${objId}`)
-    .then((result) => {
-      resolve(result);
-    })
-    .catch((error) => {
-      reject(error);
-    });
+      .get(`${dbUrl}/${objId}`)
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
-};
+};*/
 
 /**
  * Init application.
  */
 function initApplication() {
   guideBg.style.display = "block";
-  navWrapper.style.display = 'block';
+  navWrapper.style.display = "block";
 }
 
 /**
@@ -460,7 +495,7 @@ function postMessageToSave() {
 }
 
 /**
- * Cancel to save the comments or emojis.
+ * Cancel when save the comments or emojis.
  */
 function cancelPostAction() {
   resetComment();
@@ -499,30 +534,30 @@ function startARMessage() {
 }
 
 window.onload = () => {
-  startArMessage     = document.getElementById("startArMessage");
-  guideBg            = document.getElementById("guide-bg");
-  navTextMessage     = document.getElementById("navTextMessage");
-  textMessage        = document.getElementById("textMessage");
-  navWrapper         = document.getElementById("nav");
+  startArMessage = document.getElementById("startArMessage");
+  guideBg = document.getElementById("guide-bg");
+  navTextMessage = document.getElementById("navTextMessage");
+  textMessage = document.getElementById("textMessage");
+  navWrapper = document.getElementById("nav");
   textMessageWrapper = document.getElementById("textMessageWrapper");
-  cancelTextMessage  = document.getElementById("cancelTextMessage");
-  addTextMessage     = document.getElementById("addTextMessage");
-  displayText        = document.getElementById("displayText");
-  postMessage        = document.getElementById("postMessage");
-  cancelMessage      = document.getElementById("cancelMessage");
-  undoEmoticon       = document.getElementById("undo");
-  navKakao           = document.getElementById("navKakao");
+  cancelTextMessage = document.getElementById("cancelTextMessage");
+  addTextMessage = document.getElementById("addTextMessage");
+  displayText = document.getElementById("displayText");
+  postMessage = document.getElementById("postMessage");
+  cancelMessage = document.getElementById("cancelMessage");
+  undoEmoticon = document.getElementById("undo");
+  navKakao = document.getElementById("navKakao");
   navEmoticonMessage = document.getElementById("navEmoticonMessage");
-  textMessageBtn     = document.getElementById("textMessageBtn");
-  textMessageTitle   = document.getElementById("textMessageTitle");
-  emotions           = document.getElementById("emotions");
-  emoticonBox        = document.querySelectorAll(".emoticonBox");
+  textMessageBtn = document.getElementById("textMessageBtn");
+  textMessageTitle = document.getElementById("textMessageTitle");
+  emotions = document.getElementById("emotions");
+  emoticonBox = document.querySelectorAll(".emoticonBox");
   postMessageWrapper = document.getElementById("postMessageWrapper");
-  shareKakao         = document.getElementById("shareKakao");
-  cancelShare        = document.getElementById("cancelShare");
-  confirmShare       = document.getElementById("confirmShare");
+  shareKakao = document.getElementById("shareKakao");
+  cancelShare = document.getElementById("cancelShare");
+  confirmShare = document.getElementById("confirmShare");
 
-  startArMessage.addEventListener('click', startARMessage);
+  startArMessage.addEventListener("click", startARMessage);
   postMessage.addEventListener("click", postMessageToSave);
   cancelMessage.addEventListener("click", cancelPostAction);
 
@@ -588,5 +623,4 @@ window.onload = () => {
       addComment("emoji", e.currentTarget.innerHTML);
     });
   });
-
 };
