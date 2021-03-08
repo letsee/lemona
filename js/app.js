@@ -58,15 +58,15 @@ const commentTemplate = {
 const dbUrl = "classes/lemona_sticker";
 
 //******************************** AXIOS ******************************** //
-axios.defaults.baseURL = "https://browser.letsee.io:8337/parse";
-axios.defaults.headers.common["X-Parse-Application-Id"] = "awe2019wallboard";
+// axios.defaults.baseURL = "https://browser.letsee.io:8337/parse";
+// axios.defaults.headers.common["X-Parse-Application-Id"] = "awe2019wallboard";
 // axios.defaults.baseURL = 'http://localhost:1337/parse';
 // axios.defaults.headers.common['X-Parse-Application-Id'] = 'TEST_APP';
 
 //******************************** KAKAO ******************************** //
-Kakao.init("3acf383e8ccdb7b906df497c249ea01b");
-const shareUrl = "http://browser.letsee.io/lemona/";
-const shareParam = "object";
+// Kakao.init("3acf383e8ccdb7b906df497c249ea01b");
+// const shareUrl = "http://browser.letsee.io/lemona/";
+// const shareParam = "object";
 
 /**
  * Control the length of message when typing.
@@ -174,7 +174,7 @@ function resetComment(status = false) {
  * @returns {*}
  */
 function getLastChild() {
-  let xrElements = letsee.getEntityByUri("lemona.json").children;
+  let xrElements = letsee.getEntityByUri("https://s-developer.letsee.io/api-tm/target-manager/target-uid/6045eb6a358ef31bd651db03").children;
   return xrElements[xrElements.length - 1];
 }
 
@@ -298,7 +298,7 @@ const createDomContent = (_type, _content, _author = null) => {
  */
 function createRenderable(_content, _position = null, _rotation = null, _scale = null) {
 
-  const entity = letsee.getEntityByUri('lemona.json');
+  const entity = letsee.getEntityByUri('https://s-developer.letsee.io/api-tm/target-manager/target-uid/6045eb6a358ef31bd651db03');
   let xrelement = letsee.createXRElement(_content, entity);
   // letsee.bindXRElement(xrelement, entity);
 
