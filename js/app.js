@@ -174,7 +174,7 @@ function resetComment(status = false) {
  * @returns {*}
  */
 function getLastChild() {
-  let xrElements = letsee.getEntityByUri("https://s-developer.letsee.io/api-tm/target-manager/target-uid/6045eb6a358ef31bd651db03").children;
+  let xrElements = letsee.getEntityByUri("https://developer.letsee.io/api-tm/target-manager/target-uid/6051cbc99f4e4e4457a269f2").children;
   return xrElements[xrElements.length - 1];
 }
 
@@ -298,7 +298,7 @@ const createDomContent = (_type, _content, _author = null) => {
  */
 function createRenderable(_content, _position = null, _rotation = null, _scale = null) {
 
-  const entity = letsee.getEntityByUri('https://s-developer.letsee.io/api-tm/target-manager/target-uid/6045eb6a358ef31bd651db03');
+  const entity = letsee.getEntityByUri('https://developer.letsee.io/api-tm/target-manager/target-uid/6051cbc99f4e4e4457a269f2');
   let xrelement = letsee.createXRElement(_content, entity);
   // letsee.bindXRElement(xrelement, entity);
 
